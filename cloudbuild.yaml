@@ -1,13 +1,15 @@
 steps:
   - name: "gcr.io/cloud-builders/npm"
+    dir: "app"  # ✅ Use the correct working directory
     args: ["install"]
 
   - name: "gcr.io/cloud-builders/npm"
+    dir: "app"  # ✅ Use the correct working directory
     args: ["run", "build"]
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/adhyetrilpi/my-react-app", "."]
-
+    args: ["build", "-t", "gcr.io/adhyetrilpi/my-react-app", "-f", "app/Dockerfile", "."]
+  
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/adhyetrilpi/my-react-app"]
 
@@ -32,4 +34,4 @@ images:
   - "gcr.io/adhyetrilpi/my-react-app"
 
 options:
-  logging: CLOUD_LOGGING_ONLY  # ✅ Fix for your error
+  logging: CLOUD_LOGGING_ONLY

@@ -9,6 +9,7 @@ steps:
 
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/adhyetrilpi/my-react-app", "-f", "app/Dockerfile", "."]
+
   
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/adhyetrilpi/my-react-app"]

@@ -1,0 +1,39 @@
+steps:
+  # 1️⃣ Install dependencies
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["install"]
+
+  # 2️⃣ Build the React app
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["run", "build"]
+
+  # 3️⃣ Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/adhyetrilpi/react-app", "."]
+
+  # 4️⃣ Push the image to Google Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/adhyetrilpi/react-app"]
+
+  # 5️⃣ Configure `kubectl` to use the correct cluster
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "container"
+      - "clusters"
+      - "get-credentials"
+      - "react-cluster"
+      - "--zone"
+      - "us-central1-a"
+      - "--project"
+      - "adhyetrilpi"
+
+  # 6️⃣ Deploy to GKE
+  - name: "gcr.io/cloud-builders/kubectl"
+    args: ["apply", "-f", "deployment.yaml"]
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
+      - "CLOUDSDK_CONTAINER_CLUSTER=react-cluster"
+
+images:
+  - "gcr.io/adhyetrilpi/react-app"
+

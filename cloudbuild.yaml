@@ -1,30 +1,36 @@
 steps:
   - name: "gcr.io/cloud-builders/npm"
-    dir: "app"  # ✅ Use the correct working directory
+    dir: "app" # ✅ Use the correct working directory
     args: ["install"]
 
   - name: "gcr.io/cloud-builders/npm"
-    dir: "app"  # ✅ Use the correct working directory
+    dir: "app" # ✅ Use the correct working directory
     args: ["run", "build"]
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/adhyetrilpi/my-react-app", "-f", "app/Dockerfile", "."]
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/adhyetrilpi/my-react-app",
+        "-f",
+        "app/Dockerfile",
+        ".",
+      ]
 
-  
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/adhyetrilpi/my-react-app"]
 
- - name: "gcr.io/cloud-builders/gcloud"
-  args:
-    - "container"
-    - "clusters"
-    - "get-credentials"
-    - "react-cluster"
-    - "--region"
-    - "us-central1"
-    - "--project"
-    - "adhyetrilpi"
-
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "container"
+      - "clusters"
+      - "get-credentials"
+      - "react-cluster"
+      - "--zone"
+      - "us-central1"
+      - "--project"
+      - "adhyetrilpi"
 
   - name: "gcr.io/cloud-builders/kubectl"
     args: ["apply", "-f", "deployment.yaml"]

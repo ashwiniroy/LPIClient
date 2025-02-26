@@ -16,9 +16,21 @@ spec:
     spec:
       containers:
         - name: react-app
-          image: gcr.io/adhyetrilpi/react-app:latest  # Uses your GCR image
+          image: gcr.io/adhyetrilpi/react-app:latest
           ports:
-            - containerPort: 80
+            - containerPort: 80  # ✅ Matches EXPOSE 80 in Dockerfile
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80  # ✅ Ensure it checks the correct port
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80  # ✅ Ensure container is healthy
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
             limits:
               memory: "512Mi"
@@ -37,5 +49,5 @@ spec:
     app: react-app
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 80      # External access
+      targetPort: 80  # ✅ Must match container port 80

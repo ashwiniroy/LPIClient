@@ -19,5 +19,5 @@ RUN npm run build
 # Use a lightweight web server for serving React
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]

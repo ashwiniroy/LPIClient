@@ -23,13 +23,13 @@ spec:
             httpGet:
               path: /
               port: 3000  # ✅ Ensure it checks the correct port
-            initialDelaySeconds: 5
+            initialDelaySeconds: 240
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
               port: 3000 # ✅ Ensure container is healthy
-            initialDelaySeconds: 5
+            initialDelaySeconds: 240
             periodSeconds: 10
           resources:
             limits:
